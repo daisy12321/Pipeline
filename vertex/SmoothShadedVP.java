@@ -1,13 +1,12 @@
 package pipeline.vertex;
 
 import javax.vecmath.Color3f;
-import javax.vecmath.Point3f;
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
-import pipeline.PointLight;
 import pipeline.Pipeline;
+import pipeline.PointLight;
 import pipeline.math.Matrix4f;
 import pipeline.misc.Vertex;
 
@@ -64,18 +63,17 @@ public class SmoothShadedVP extends VertexProcessor {
         // also uses Pipeline.specularExponent
         
         Vector3f eyeDir = new Vector3f();
-        Vector3f vTmp = new Vector3f(output.v.x, output.v.y, output.v.z);
-        eyeDir.set(vTmp);
+        eyeDir.set(v);
         eyeDir.scale(-1);
         eyeDir.normalize();
         
-        Vector3f lightDir = new Vector3f();
-		Vector3f h = new Vector3f();
         for (PointLight light : Pipeline.lights) {
-        	lightDir.set(light.getPosition().x, light.getPosition().y, light.getPosition().z);
-        	lightDir.sub(vTmp);
+        	Vector3f lightDir = 
+        		new Vector3f(light.getPosition().x, light.getPosition().y, light.getPosition().z);
+        	lightDir.sub(v);
         	lightDir.normalize();
         	
+    		Vector3f h = new Vector3f();
 			h.add(lightDir, eyeDir);
 			h.normalize();
 			
